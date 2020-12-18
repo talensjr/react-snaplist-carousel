@@ -3,7 +3,7 @@ import { mergeStyles } from './utils';
 
 import styles from './styles.css';
 
-interface CarouselProps {
+interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   direction: 'horizontal' | 'vertical';
   disableScroll?: boolean;
   width?: string;
@@ -17,7 +17,6 @@ interface CarouselProps {
   hideScrollbar?: boolean;
   disabled?: boolean;
   className?: string;
-  tabIndex?: number;
 }
 
 const SnapListComponent: React.FC<CarouselProps> = (
@@ -31,7 +30,7 @@ const SnapListComponent: React.FC<CarouselProps> = (
     hideScrollbar = true,
     disabled = false,
     className,
-    tabIndex,
+    ...props
   },
   ref: React.Ref<HTMLDivElement>,
 ) => (
@@ -53,7 +52,7 @@ const SnapListComponent: React.FC<CarouselProps> = (
       scrollPaddingLeft: scrollPadding?.left ?? '0px',
     }}
     ref={ref}
-    tabIndex={tabIndex}
+    {...props}
   >
     {children}
   </div>

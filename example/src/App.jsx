@@ -6,6 +6,7 @@ import { Menu } from './Menu';
 import { Horizontal } from './Horizontal';
 import { Vertical } from './Vertical';
 import { List } from './List';
+import { A11y } from './A11y';
 
 export const App = () => {
   const snaplist = useRef(null);
@@ -45,6 +46,9 @@ export const App = () => {
         </SnapItem>
         <SnapItem snapAlign="start" width="100%">
           <List />
+        </SnapItem>
+        <SnapItem snapAlign="start" width="100%">
+          <A11y />
         </SnapItem>
       </SnapList>
     </Frame>

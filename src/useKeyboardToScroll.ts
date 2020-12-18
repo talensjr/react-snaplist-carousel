@@ -1,16 +1,22 @@
-import { RefObject, useEffect } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { useScroll } from './useScroll';
 import { getVisibleChildren } from './useVisibleElements';
 
-export const useKeyboardToScroll = ({ ref }: { ref: RefObject<HTMLDivElement> }) => {
+export const useKeyboardToScroll = ({
+  ref,
+  disable = false,
+}: {
+  ref: RefObject<HTMLDivElement>;
+  disable?: boolean;
+}) => {
+  const [disabled, setDisabled] = useState(disable);
   const goToChildren = useScroll({ ref });
   useEffect(() => {
     const $viewport: HTMLDivElement | null = ref.current;
-    if (!$viewport) return;
+    if (!$viewport || disabled) return;
     const $items = $viewport.children;
     const totalItems = $items.length;
     const keyDownHandler = (e: KeyboardEvent) => {
-      console.log('ev');
       const currentElement = getVisibleChildren($viewport).children[0];
       if (['ArrowRight', 'ArrowDown'].includes(e.key)) {
         goToChildren(currentElement < totalItems - 1 ? currentElement + 1 : currentElement);
@@ -28,6 +34,10 @@ export const useKeyboardToScroll = ({ ref }: { ref: RefObject<HTMLDivElement> })
         $viewport.removeEventListener('keydown', keyDownHandler);
       }
     };
-  }, [ref, goToChildren]);
-  return '';
+  }, [ref, goToChildren, disabled]);
+  return {
+    enable: () => setDisabled(false),
+    disable: () => setDisabled(true),
+    isDisabled: disabled,
+  };
 };

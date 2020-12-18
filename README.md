@@ -316,6 +316,67 @@ Arguments
 
 \* _Required fields_
 
+### useKeyboardToScroll
+
+Use arrow keys to scroll through the carousel:
+
+- Left / Top: Back or up.
+- Right / Down: Next or down.
+
+```jsx
+const snapList = useRef(null);
+const selected = useVisibleElements(
+  { ref: snapList, debounce: 10 },
+  elements => elements[0],
+);
+
+const { isDisabled, enable, disable } = useKeyboardToScroll({ ref: snapList });
+
+return (
+  <>
+    <SnapList ref={snapList}>
+      <SnapItem snapAlign="left" tabIndex={0}>
+        <div
+          onClick={() => goToElement(0)}
+          style={{
+            backgroundColor: selected === 0 ? 'papayawhip' : null,
+          }}
+        >
+          Item 0
+        </div>
+      </SnapItem>
+      <SnapItem snapAlign="left">
+        <div
+          onClick={() => goToElement(1)}
+          style={{
+            backgroundColor: selected === 1 ? 'papayawhip' : null,
+          }}
+        >
+          Item 1
+        </div>
+      </SnapItem>
+    </SnapList>
+  </p>
+);
+```
+
+Response
+
+- isDisabled: A boolean indicating the current state of the utility.
+- disable: A function `() => void` to disable the dragToScroll feature.
+- enable: A function `() => void` to enable the dragToScroll feature.
+
+Arguments
+
+- `ref`: { React.RefObject\<HTMLDivElement\> } \*
+- `disable`: { booleal }. Optional (default false). The hook will be auto-disabled on touch devices but you can force it using this option.
+
+Tip
+
+You have to make sure the current focused element of you application is the `<SnapList>` element itself or any `children`, either way, arrow keys would not respond.
+
+\* _Required fields_
+
 ### isTouchDevice
 
 This an internal util function used by `useDragToScroll` that can be useful for you. You can use it to modify your UI depending on the device. For example, you can show next/previous arrows only on no touch devices.
@@ -339,6 +400,7 @@ This an internal util function used by `useDragToScroll` that can be useful for 
 - **Breakchange** useDragToScroll is returning `{ isDragging }` instead of the boolean. https://github.com/luispuig/react-snaplist-carousel/commit/a2d23d6b804dcab1da9520db8edc746c6837f23e#diff-e3457effa5fa347d185fdd0d08ba3209R173
 - Version `4.1.0`. Fix support for macOS Big Sur
 - Version `4.2.0`. Add useScroll / goTo / animationEnabled option. Usefull to scroll on component mount.
+- Version `4.3.0`. Add useKeyboardToScroll and A11y example.
 
 ### Version 3
 
